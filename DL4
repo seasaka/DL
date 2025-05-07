@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+(trainX,trainY),(testX,testY)=tf.keras.datasets.mnist.load_data()
+trainX.shape
+testX.shape
+trainY[30]
+testY[45]
+plt.imshow(trainX[30],cmap = 'gray')
+plt.show()
+print(trainY[30])
+plt.imshow(testX[30],cmap = 'gray')
+plt.show()
+print(testY[30])
+trainY[30]
+trainY= tf.keras.utils.to_categorical(trainY,num_classes=10)
+testY= tf.keras.utils.to_categorical(testY,num_classes=10)
+# Model Building
+#Define sequential keras model
+model = tf.keras.models.Sequential()
+#Reshape input image into column matrix(28*28) to (784*1)
+model.add(tf.keras.layers.Reshape((784,), input_shape=(28,28)))
+#Perform Normalization
+model.add(tf.keras.layers.BatchNormalization())
+#Add layers with activation function Relu
+model.add(tf.keras.layers.Dense(100, activation='relu'))
+model.add(tf.keras.layers.Dense(100, activation='relu'))
+model.add(tf.keras.layers.Dense(100, activation='relu'))
+#classifier layer
+model.add(tf.keras.layers.Dense(10, activation='softmax'))
+#Model Summary
+model.summary()
+#compile
+model.compile(optimizer='sgd', loss='categorical_crossentropy', metrics=['accuracy'])
+#check for epochs
+model.fit(trainX, trainY, epochs=10, batch_size=100)
+#Testing
+model.predict(testX[:4])
+plt.imshow(testX[0])
+plt.show()
+print(testY[0])
+# Create the plot
+history = model.fit(trainX, trainY, epochs=10, batch_size=100)
+plt.plot(history.history['loss'])
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.show()
+
+
