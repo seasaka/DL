@@ -1,0 +1,112 @@
+
+import cProfile
+import time
+
+
+import tensorflow as tf
+
+
+A11= tf.constant([1,2,3])
+B11= tf.constant([1,2,3])
+
+
+A12= tf.constant([[1,2,3],[4,5,6]])
+B12= tf.constant([[1,3,5],[2,4,6]])
+
+
+#Additon
+C11= tf.add(A11,B11)
+print(C11)
+
+
+C12= tf.add(A12,B12)
+print(C12)
+
+
+C13= tf.reduce_sum(A12)
+print(C13)
+
+
+C14= tf.reduce_sum(A12,0)
+print(C14)
+
+
+C15= tf.reduce_sum(A12,1)
+print(C15)
+# Subtract
+S11=tf.subtract(A11,B11)
+print (S11)
+
+
+S12=tf.subtract(A12,B12)
+print (S12)
+#multiplication
+M11=tf.multiply(A11,B11)
+print (M11)
+M12=tf.multiply(A12,B12)
+print (M12)
+#matmul
+
+
+K11=tf.constant([[2,1,3],[1,2,3]])
+K12=tf.constant([[1,2,2,1],[1,2,3,1],[1,2,3,4]])
+
+
+L11= tf.matmul(K11,K12)
+print(L11)
+def add_funct(Add1,Add2):
+  add= tf.add(Add1,Add2)
+  print(add)
+
+
+#test the function
+A= add_funct(A11,B11)
+print(A)
+#verify GPU availability using tensorflow
+import tensorflow as tf
+print("GPU Available",tf.config.list_physical_devices('GPU'))
+import time
+size=1000
+a= tf.random.uniform([size,size])
+b= tf.random.uniform([size,size])
+
+
+#measure executin time on GPU
+with tf.device('/GPU:0'):
+  start_gpu= time.time()
+  result_gpu= tf.matmul(a,b)
+  end_gpu= time.time()
+  print("GPU execusion time: {:.6f} seconds".format(end_gpu-start_gpu))
+#measure execution time on CPU
+with tf.device('/CPU:0'):
+  start_cpu= time.time()
+  result_cpu= tf.matmul(a,b)
+  end_cpu= time.time()
+  print("CPU execusion time: {:.6f} seconds".format(end_cpu-start_cpu))
+#use cprofile to time it
+with cProfile.Profile() as pr:
+  t= tf.matmul(a,b)
+  pr.print_stats()
+import tensorflow as tf
+from tensorflow import keras
+
+
+A11= keras.ops.convert_to_tensor([1,2,3])
+B11= keras.ops.convert_to_tensor([1,2,3])
+
+
+A12= keras.ops.convert_to_tensor([[1,2,3],[4,5,6]])
+B12= keras.ops.convert_to_tensor([[1,3,5],[2,4,6]])
+
+
+#Additon
+C11= keras.ops.add(A11,B11)
+print(C11)
+
+
+C12= keras.ops.add(A12,B12)
+print(C12)
+
+
+
+
